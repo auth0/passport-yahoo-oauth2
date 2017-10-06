@@ -1,0 +1,39 @@
+{
+  "name": "passport-yahoo-oauth2",
+  "version": "1.0.0",
+  "description": "This is a passport oauth2 strategy for yahoo.",
+  "keywords": [
+    "passport",
+    "yahoo",
+    "auth",
+    "authn",
+    "authentication",
+    "identity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/auth0/passport-yahoo-oauth2.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./lib",
+  "dependencies": {
+    "passport-oauth2": "1.x.x",
+    "pkginfo": "0.2.x",
+    "request": "^2.74.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.0",
+    "nock": "^9.0.22"
+  },
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  }
+}
