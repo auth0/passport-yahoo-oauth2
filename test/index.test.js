@@ -1,6 +1,6 @@
 var assert = require('assert');
 var util = require('util');
-var yahoo = require('../lib/passport-yahoo-oauth');
+var yahoo = require('../lib');
 
 
 describe('passport-yahoo', function() {

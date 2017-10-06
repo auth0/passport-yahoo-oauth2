@@ -1,7 +1,7 @@
 var assert = require('assert');
 var util = require('util');
 var nock = require('nock');
-var YahooStrategy = require('../lib/passport-yahoo-oauth/strategy');
+var YahooStrategy = require('../lib/strategy');
 
 var profileBody = JSON.stringify({
   "profile":
