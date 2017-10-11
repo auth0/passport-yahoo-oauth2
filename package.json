@@ -1,6 +1,6 @@
 {
   "name": "passport-yahoo-oauth2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a passport oauth2 strategy for yahoo.",
   "keywords": [
     "passport",
