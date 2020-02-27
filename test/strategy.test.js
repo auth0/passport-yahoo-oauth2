@@ -1,146 +1,26 @@
 var assert = require('assert');
-var util = require('util');
 var nock = require('nock');
 var YahooStrategy = require('../lib/strategy');
 
-var profileBody = JSON.stringify({
-  "profile":
-  {
-    "uri":"http://social.yahooapis.com/v1/user/12345/profile",
-    "guid": "12345",
-    "created": "2008-08-26T23:35:16Z",
-    "familyName": "Edgerton",
-    "gender": "F",
-    "givenName": "Samantha",
-    "memberSince": "1996-10-09T01:33:06Z",
-    "image":
-    {
-      "height": 225,
-      "imageUrl": "http://img.avatars.yahoo.com/users/1YfXUc4vMAAEB9IFDbJ_vk45UmUYE==.large.png",
-      "size": "150x225",
-      "width": 150
-    },
-    "interests":
-    [
-      {
-        "declaredInterests":
-        [
-          "Pottery",
-          "Tennis",
-          "Skiing",
-          "Hiking",
-          "Travel",
-          "picnics"
-        ],
-        "interestCategory": "prfFavHobbies"
-      },
-      {
-        "declaredInterests":
-        [
-          "Celtic"
-        ],
-        "interestCategory": "prfFavMusic"
-      },
-      {
-        "declaredInterests":
-        [
-          "Ratatouille"
-        ],
-        "interestCategory": "prfFavMovies"
-      },
-      {
-        "declaredInterests": null,
-        "interestCategory": "prfFavFutureMovies"
-      },
-      {
-        "declaredInterests":
-        [
-          ""
-        ],
-        "interestCategory": "prfFavBooks"
-      },
-      {
-        "declaredInterests": null,
-        "interestCategory": "prfFavFutureBooks"
-      },
-      {
-        "declaredInterests":
-        [
-          ""
-        ],
-        "interestCategory": "prfFavQuotes"
-      },
-      {
-        "declaredInterests":
-        [
-          "Indian",
-          "Ethiopean"
-        ],
-        "interestCategory": "prfFavFoods"
-      },
-      {
-        "declaredInterests":
-        [
-          "Britain",
-          "California"
-        ],
-        "interestCategory": "prfFavPlaces"
-      },
-      {
-        "declaredInterests": null,
-        "interestCategory": "prfFavFuturePlaces"
-      },
-      {
-        "declaredInterests":
-        [
-          ""
-        ],
-        "interestCategory": "prfFavAelse"
-      }
-    ],
-    "lang": "en-US",
-    "location": "Palo Alto",
-    "lookingFor":
-    [
-      "FRIENDSHIP",
-      "NETWORKING"
-    ],
-    "nickname": "Sam",
-    "profileUrl": "http://social.yahooapis.com/v1/user/profile/usercard",
-    "relationshipStatus": "MARRIED",
-    "schools":
-    [
-      {
-        "id": 1,
-        "schoolName": "San Francisco State University",
-        "schoolType": "c",
-        "schoolYear": "2005"
-      },
-      {
-        "id": 2,
-        "schoolName": "Univerity of Massachusetts",
-        "schoolType": "c",
-        "schoolYear": "1989"
-      }
-    ],
-    "status":
-    {
-      "lastStatusModified": "2008-08-29",
-      "message": "I&#39;m working"
-    },
-    "timeZone": "America/Los_Angeles",
-    "works":
-    [
-      {
-        "current": true,
-        "id": 3,
-        "startDate": "2005-06-01",
-        "title": "Documentation Manager",
-        "workName": "Yahoo!"
-      }
-    ],
-    "isConnected": true
-  }
+const profileBody = JSON.stringify({
+  sub: "JEF4XR2CT55JPVEBVD7ZVT6A3A",
+  name: "Jasmine Smith",
+  given_name: "Jasmine",
+  family_name: "Smith",
+  locale: "en-US",
+  email: "yqa_functest_15572415322065371@yahoo.com",
+  email_verified: true,
+  birthdate: "1972",
+  profile_images: {
+     image32: "https://ct.yimg.com/cy/1768/39361574426_98028a_32sq.jpg",
+     image64: "https://ct.yimg.com/cy/1768/39361574426_98028a_64sq.jpg",
+     image128: "https://ct.yimg.com/cy/1768/39361574426_98028a_128sq.jpg",
+     image192: "https://ct.yimg.com/cy/1768/39361574426_98028a_192sq.jpg"
+  },
+  preferred_username: "yqa_functest_15572415322065371@yahoo.com",
+  phone_number: "+18663395023",
+  nickname: "Jasmine",
+  picture: "https://ct.yimg.com/cy/1768/39361574426_98028a_192sq.jpg"
 });
 
 describe('passport-yahoo strategy', function() {
@@ -163,15 +43,15 @@ describe('passport-yahoo strategy', function() {
       },
       function() {});
 
-      nock('https://social.yahooapis.com')
-        .get('/v1/user/the_guid/profile?format=json')
+      nock('https://api.login.yahoo.com')
+        .get('/openid/v1/userinfo')
         .reply(200, profileBody);
     });
 
     describe('when told to load user profile', function() {
       before(function(done) {
         var _this = this;
-        this.strategy.userProfile('token', { xoauth_yahoo_guid: 'the_guid' }, function (err, profile) {
+        this.strategy.userProfile('token', function (err, profile) {
           _this.err = err;
           _this.profile = profile;
           done();
@@ -184,14 +64,14 @@ describe('passport-yahoo strategy', function() {
 
       it('should load profile', function() {
         assert.equal(this.profile.provider, 'yahoo');
-        assert.equal(this.profile.id, '12345');
-        assert.equal(this.profile.displayName, 'Samantha Edgerton');
-        assert.equal(this.profile.name.familyName, 'Edgerton');
-        assert.equal(this.profile.name.givenName, 'Samantha');
+        assert.equal(this.profile.id, 'JEF4XR2CT55JPVEBVD7ZVT6A3A');
+        assert.equal(this.profile.displayName, 'Jasmine Smith');
+        assert.equal(this.profile.name.familyName, 'Smith');
+        assert.equal(this.profile.name.givenName, 'Jasmine');
       })
 
       it('should set raw property', function() {
-        assert(this.profile._raw);
+        assert(typeof this.profile._raw === 'string');
       })
 
       it('should set json property', function() {
@@ -210,15 +90,15 @@ describe('passport-yahoo strategy', function() {
       },
       function() {});
 
-      nock('https://social.yahooapis.com')
-        .get('/v1/user/the_guid/profile?format=json')
+      nock('https://api.login.yahoo.com')
+        .get('/openid/v1/userinfo')
         .reply(401, 'NO');
     });
 
     describe('when told to load user profile', function() {
       before(function(done) {
         var _this = this;
-        this.strategy.userProfile('token', { xoauth_yahoo_guid: 'the_guid' }, function (err, profile) {
+        this.strategy.userProfile('token', function (err, profile) {
           _this.err = err;
           _this.profile = profile;
           done();
