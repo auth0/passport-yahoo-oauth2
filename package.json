@@ -27,12 +27,12 @@
   },
   "devDependencies": {
     "mocha": "^4.0.0",
-    "nock": "^9.0.22"
+    "nock": "^13.3.1"
   },
   "scripts": {
     "test": "mocha test/*.test.js"
   },
   "engines": {
-    "node": ">= 0.4.0"
+    "node": ">= 16"
   }
 }
